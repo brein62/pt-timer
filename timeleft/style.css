@@ -1,0 +1,20 @@
+.container {
+    width: 300px;
+    text-align:center;
+    padding:1em 10px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 1em auto;
+}
+
+.date-table {
+    width: 100%;
+}
+
+.date-table tr.first-tr td {
+    widtH: 25%;
+    border: 1px solid #888;
+    font-size: 1.9em;
+    font-weight: bold;
+
+}
