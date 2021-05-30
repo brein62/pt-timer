@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="./custom_workout.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+		<script src="./custom_workout.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="container">
+			<header>
+				<h1 id="title">Circuit Breaker PT Workout Timer</h1>
+			</header>
+			<fieldset class="activity-container">
+				<legend>Activity Done:</legend>
+				<p id="activity">Timer not started yet</p>
+				<p id="next-activity-p">Next Activity: <span id="next-activity">-</span></p>
+			</fieldset>
+			<div id="overalltimer">
+				<div id="startc" class="timer-container">
+					<button class="button-h" id="start">Start Timer</button>
+				</div>
+				<div id="timerc" class="timer-container">
+					<p>Activity Time Left:</p>
+					<div id="timer">3:00</div>
+					<p>Elapsed Time:</p>
+					<p id="elapsed">0:00</p>
+				</div>
+			</div>
+			<footer>
+				<button class="button-h" id="edit-activity">Edit Activities</button>
+				<button class="button-h" id="night">Night Mode</button>
+				<p><a href="./index.html">Circuit Breaker PT Workout Timer</a></p>
+			</footer>
+		</div>
+		<div id="popup-panel"></div>
+		<div id="popup-container">
+			<h1>Edit Activities</h1>
+			<table>
+				<tr>
+					<td colspan="2">
+						<fieldset>
+							<legend>Click below to enter a file.</legend>
+							<label for="csvfile">
+								<input type="file" style="display:none;" name="csvfile" id="csvfile" accept=".csv, .txt">
+								<span id="csvdisplay">No files yet.</span>
+							</label>
+						</fieldset>
+					</td>
+				</tr>
+				<tr style="width: 100%;">
+					<td colspan="2" class="csvtext-container">
+						<textarea id="csvtext"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">
+						<button class="button-h" id="save-panel">Save Activity</button>
+					</td>
+					<td class="right">
+						<button class="button-h" id="close-panel">Close</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
