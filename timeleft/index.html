@@ -11,23 +11,23 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     </head>
-    <body onload="window.setInterval(function(){daysLeft(option)}, 10);">
+    <body onload="page();">
         <div class="jumbotron container">
-            <h1 class="text-info">DAYS LEFT</h1>
+            <h1>DAYS LEFT</h1>
             <hr>
-            <h5>Select date:</h5>
+            <h5>Select End Date</h5>
             <ul class="pagination justify-content-center">
                 <li class="page-item active" id="jun13w"><a href="#" class="page-link" id="jun13">June 13</a></li>
                 <li class="page-item" id="jun15w"><a href="#" class="page-link" id="jun15">June 15</a></li>
             </ul>
             <hr>
-            <h5>Time until <span id="time" class="text-danger">Jun 13, midnight</span>:</h5>
+            <h5>Time until <span id="time-1" class="text-danger">Jun 13, midnight</span>:</h5>
             <table class="date-table">
                 <tr class="first-tr">
-                    <td id="days">0</td>
-                    <td id="hours">0</td>
-                    <td id="min">0</td>
-                    <td id="sec">0</td>
+                    <td id="days-1">0</td>
+                    <td id="hours-1">0</td>
+                    <td id="min-1">0</td>
+                    <td id="sec-1">0</td>
                 </tr>
                 <tr>
                     <td class="small">days</td>
@@ -36,6 +36,34 @@
                     <td class="small">sec</td>
                 </tr>
             </table>
+            <hr>
+            <h5>Select Start Date</h5>
+            <ul class="pagination justify-content-center">
+                <li class="page-item active" id="may16w"><a href="#" class="page-link" id="may16">May 16</a></li>
+                <li class="page-item" id="may18w"><a href="#" class="page-link" id="may18">May 18</a></li>
+            </ul>
+            <hr>
+            <h5>Time from <span id="time-2" class="text-danger">May 16, midnight</span>:</h5>
+            <table class="date-table">
+                <tr class="first-tr">
+                    <td id="days-2">0</td>
+                    <td id="hours-2">0</td>
+                    <td id="min-2">0</td>
+                    <td id="sec-2">0</td>
+                </tr>
+                <tr>
+                    <td class="small">days</td>
+                    <td class="small">hours</td>
+                    <td class="small">min</td>
+                    <td class="small">sec</td>
+                </tr>
+            </table>
+            <hr>
+            <h5>Progress</h5>
+            <p class="large" id="progress-text"></p>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
         </div>
 
         <script src="script.js"></script>
