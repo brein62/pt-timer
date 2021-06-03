@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				font-family: Helvetica, Arial, sans-serif;
+				background-color: #EEEEEE;
+				color: #111111;
+			}
+			#container {
+				z-index: 0;
+				position: relative;
+				width: 600px;
+				height: calc(100% - 60px);
+				margin: 30px auto;
+				padding: 30px;
+				border-radius: 20px;
+				border: solid 3px #111111;
+			}
+			fieldset {
+				border-radius: 15px;
+				border: solid 2px inherit;
+			}
+			legend {
+				width: auto;
+				margin: 0 auto;
+				padding: 0 15px;
+			}
+            header {
+                display: flex;
+                height: 50px;
+				flex-direction: column;
+				justify-content: center;
+				margin-bottom: 10px;
+            }
+            #title {
+                font-size: 35px;
+                font-weight: bold;
+                text-align: center;
+			}
+			#overalltimer {
+				margin: 25px 0;
+			}
+			#activity {
+				margin:0;
+				padding: 10px 0 0 0;
+				text-align: center;
+				font-weight: bold;
+				font-size: 35px;
+			}
+			#next-activity-p {
+				margin: 0;
+				padding: 10px 0 15px 0;
+				font-size: 20px;
+				text-align: center;
+			}
+			#next-activity {
+				font-weight: bold;
+			}
+			.timer-container p {
+				margin: 0;
+				padding: 0;
+				font-size: 35px;
+				text-align: center;
+			}
+			#timer {
+				font-size:125px; 
+				text-align:center;
+				font-family:sans-serif;
+				font-weight: bold;
+				padding-top: 0;
+				padding-bottom: 15px;
+			}
+			#elapsed {
+				font-family: sans-serif;
+				font-weight: bold;
+				font-size: 80px;
+			}
+			#start { margin: 0 auto; }
+			footer {
+				width: 100%;
+			}
+
+			button {
+				display: block;
+				padding: 0 auto;
+				margin: 10px auto;
+			}
+			.BR {
+				position: absolute;
+				right: 50px;
+				bottom: 50px;
+			}
+			.button-h {
+				width: 225px;
+				height: 75px;
+				border: solid 4px;
+				border-radius: 15px;
+				font-size: 26px;
+				font-weight: bold;
+				font-family: Helvetica, Arial, sans-serif;
+				background-color: #444444;
+				color: #BBBBBB;
+			}
+			.button-container {
+				position: absolute;
+				top: 5px;
+				right: 5px;
+				width: 70px;
+				/*border: solid 4px;
+				border-radius: 15px;
+				font-family: "Exo 2", sans-serif;
+				background-color: #444444;
+				color: #BBBBBB;*/
+			}
+			.button-v {
+				font-family: Helvetica, Arial, sans-serif;
+				background-color: #444444;
+				color: #BBBBBB;
+				width: 100%;
+				height: 60px;
+				font-size: 26px;
+				font-weight: bold;
+			}
+			.button-v-top {
+				border: solid;
+				border-width: 3px 3px 1.5px 3px;
+				border-top-left-radius: 15px;
+				border-top-right-radius: 15px;
+			}
+			.button-v-bottom {
+				border: solid;
+				border-width: 1.5px 3px 3px 3px;
+				border-bottom-left-radius: 15px;
+				border-bottom-right-radius: 15px;
+			}
+			.button-container p {
+				text-align: center;
+				font-weight: bold;
+				font-size: 16px;
+				margin-top: 5px;
+			}
+			button {
+				outline: none;
+				box-shadow: 0 4px #999;
+			}
+			button:active {
+				box-shadow: 0 1px #666;
+				transform: translateY(3px);
+			}
+
+			#popup-panel {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 5;
+				background-color: currentColor;
+				opacity: 0.85;
+			}
+
+			#popup-container {
+				position: absolute;
+				width: 600px;
+				top: 10%;
+				left: calc((100% - 600px) / 2);
+				z-index: 6;
+				border-radius: 15px;
+				border: solid 3px currentColor;
+				background-color: inherit;
+				opacity: 0.85;
+			}
+
+			#popup-container h1 {
+				text-align: center;
+			}
+
+			#popup-container table { 
+				margin: 0 auto;
+				width: 100%; 
+				font-size: 1.3em;
+			}
+
+			#popup-container table td {padding-top: 10px; padding-bottom: 10px;}
+
+			#popup-container table td.left {
+				text-align: right;
+				padding-right: 8px;
+				font-weight: bold;
+				width: 30%;
+			}
+			#popup-container table td.right {
+				text-align: left;
+				padding-left: 8px;
+				width: 70%;
+			}
+			#popup-container input {
+				padding: 2px 0.5em;
+				font-family: inherit;
+				font-size: 1.3em;
+				border-radius: 8px;
+				border: 1px solid inherit;
+			}
+			#popup-container button { margin: 0.67em auto; }
+			.small { font-size: 0.7em; }
+		</style>
+		<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			// for debugging purposes
+			const activitiesTest = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 480, 540, 555, 600, 615, 660, 675, 720, 735, 780, 795, 840, 900, 915, 960, 975, 1020, 1035, 1080, 1095, 1140, 1155, 1200, 1260, 1275, 1320, 1335, 1380, 1395, 1440, 1455, 1500, 1515, 1560, 1620, 1800];
+			const testMode = false;
+
+			var startTime = 0;
+			var endTime = 0;
+			var elapsedTime = 0;
+			var displayedTime = 0;
+			var j = 0;
+			var activities = [180, 195, 240, 255, 300, 315, 360, 375, 420, 435, 480, 540, 555, 600, 615, 660, 675, 720, 735, 780, 795, 840, 900, 915, 960, 975, 1020, 1035, 1080, 1095, 1140, 1155, 1200, 1260, 1275, 1320, 1335, 1380, 1395, 1440, 1455, 1500, 1515, 1560, 1620, 1800];
+			var activitynameT = ['Warm Up', 'Set 1: 15s Rest 1', 'Set 1: Execute Exercise 1', 'Set 1: 15s Rest 2', 'Set 1: Execute Exercise 2', 'Set 1: 15s Rest 3', 'Set 1: Execute Exercise 3', 'Set 1: 15s Rest 4', 'Set 1: Execute Exercise 4', 'Set 1: 15s Rest 5', 'Set 1: Execute Exercise 5', '60s Rest 1', 'Set 2: 15s Rest 1', 'Set 2: Execute Exercise 1', 'Set 2: 15s Rest 2', 'Set 2: Execute Exercise 2', 'Set 2: 15s Rest 3', 'Set 2: Execute Exercise 3', 'Set 2: 15s Rest 4', 'Set 2: Execute Exercise 4', 'Set 2: 15s Rest 5', 'Set 2: Execute Exercise 5', '60s Rest 2', 'Set 3: 15s Rest 1', 'Set 3: Execute Exercise 1', 'Set 3: 15s Rest 2', 'Set 3: Execute Exercise 2', 'Set 3: 15s Rest 3', 'Set 3: Execute Exercise 3', 'Set 3: 15s Rest 4', 'Set 3: Execute Exercise 4', 'Set 3: 15s Rest 5', 'Set 3: Execute Exercise 5', '60s Rest 3', 'Set 4: 15s Rest 1', 'Set 4: Execute Exercise 1', 'Set 4: 15s Rest 2', 'Set 4: Execute Exercise 2', 'Set 4: 15s Rest 3', 'Set 4: Execute Exercise 3', 'Set 4: 15s Rest 4', 'Set 4: Execute Exercise 4', 'Set 4: 15s Rest 5', 'Set 4: Execute Exercise 5', '60s Rest 4', 'Cool Down', 'Done'];
+			var activityname = ['Warm Up', 'Set 1: 15s Rest 1', 'Set 1: Execute Exercise 1', 'Set 1: 15s Rest 2', 'Set 1: Execute Exercise 2', 'Set 1: 15s Rest 3', 'Set 1: Execute Exercise 3', 'Set 1: 15s Rest 4', 'Set 1: Execute Exercise 4', 'Set 1: 15s Rest 5', 'Set 1: Execute Exercise 5', '60s Rest 1', 'Set 2: 15s Rest 1', 'Set 2: Execute Exercise 1', 'Set 2: 15s Rest 2', 'Set 2: Execute Exercise 2', 'Set 2: 15s Rest 3', 'Set 2: Execute Exercise 3', 'Set 2: 15s Rest 4', 'Set 2: Execute Exercise 4', 'Set 2: 15s Rest 5', 'Set 2: Execute Exercise 5', '60s Rest 2', 'Set 3: 15s Rest 1', 'Set 3: Execute Exercise 1', 'Set 3: 15s Rest 2', 'Set 3: Execute Exercise 2', 'Set 3: 15s Rest 3', 'Set 3: Execute Exercise 3', 'Set 3: 15s Rest 4', 'Set 3: Execute Exercise 4', 'Set 3: 15s Rest 5', 'Set 3: Execute Exercise 5', '60s Rest 3', 'Set 4: 15s Rest 1', 'Set 4: Execute Exercise 1', 'Set 4: 15s Rest 2', 'Set 4: Execute Exercise 2', 'Set 4: 15s Rest 3', 'Set 4: Execute Exercise 3', 'Set 4: 15s Rest 4', 'Set 4: Execute Exercise 4', 'Set 4: 15s Rest 5', 'Set 4: Execute Exercise 5', '60s Rest 4', 'Cool Down', 'Done'];
+			var running = false;
+			var night = false;
+			const soundEffect = new Audio();
+			var played = false;
+
+            if (testMode) activities = activitiesTest;
+
+			$(document).ready(function() {
+				$("#timerc").hide();
+				$("#popup-panel").hide();
+				$("#popup-container").hide();
+				editActivities();
+
+				$("#edit-activity").click(function() {
+					$("#popup-panel").show();
+					$("#popup-container").show();
+				});
+				$("#close-panel").click(function() {
+					$("#popup-panel").hide();
+					$("#popup-container").hide();
+					editActivities();
+				});
+				$("#night").click(function(){
+					nightMode();
+				});
+				$("#start").click(function(){
+					$("#startc").hide();
+					$("#timerc").show();
+					soundEffect.play();
+					startTiming();
+				});
+			});
+			function nightMode() {
+				if (!night) {
+					night = true;
+					$("body").css({"background-color": "#111111", "color": "#eeeeee"});
+					$("button").css({"background-color": "#999999", "color": "#666666", "box-shadow": "0 4px #444444"});
+					$("input").css({"color": "#222222", "background-color": "#999999"});
+					$("button:active").css({"box-shadow": "0 1px #222222"});
+					$("#container").css({"border": "solid 3px #eeeeee"});
+					$("#night").html("Day Mode");
+				} else {
+					night = false;
+					$("body").css({"color": "#111111", "background-color": "#eeeeee"});
+					$("button").css({"color": "#bbbbbb", "background-color": "#444444", "box-shadow": "0 4px #999999"});
+					$("input").css({"color": "revert", "background-color": "revert"});
+					$("button:active").css({"box-shadow": "0 1px #666666"});
+					$("#container").css({"border": "solid 3px #111111"});
+					$("#night").html("Night Mode");
+				}
+			}
+			function replace(i, find, repl) {
+				if ($(repl).val() != "") {
+					repl = $(repl).val();
+				} else {
+					repl = $(repl).attr("placeholder");
+				}
+				if (activitynameT[i].includes(find)) {
+					console.log("a" + activityname[i]);
+					activityname[i] = activityname[i].replace(find, repl);
+					console.log("b" + activityname[i]);
+				}
+			}
+			function editActivities() {
+				for (var i = 0; i < activitynameT.length; i++) {
+					activityname[i] = activitynameT[i];
+					replace(i, "Exercise 1", "#activity-1");
+					replace(i, "Exercise 2", "#activity-2");
+					replace(i, "Exercise 3", "#activity-3");
+					replace(i, "Exercise 4", "#activity-4");
+					replace(i, "Exercise 5", "#activity-5");
+				}
+			}
+			function startTiming() {
+				running = true;
+				startTime = new Date().getTime();
+				$("#activity").html("Warm Up");
+				$("#next-activity").html(activityname[1]);
+				time();
+			} 
+			function stopTiming() {
+				running = false;
+				$("#activity").html("Workout done. Timer not started yet");
+				$("#next-activity").html("-");
+				$("#startc").show();
+				$("#timer").html("3:00");
+				$("#timerc").hide();
+				startTime = 0;
+				endTime = 0;
+				elapsedTime = 0;
+				displayedTime = 0;
+				j = 0;
+			}
+			function time() {
+				endTime = new Date().getTime();
+				elapsedTime = endTime - startTime;
+				if (elapsedTime > 1800000) {
+					clearTimeout('time()');
+					stopTiming();
+					return;
+				}
+				if (elapsedTime >= activities[j] * 1000) {
+					j += 1;
+					played = false;
+					$("#activity").html(activityname[j]);
+					$("#next-activity").html(activityname[j + 1]);
+				}
+				displayedTime = activities[j] * 1000 - elapsedTime;
+				if (displayedTime < 3000) {
+					$("#timer").css("color", "red");
+				} else {
+					$("#timer").css("color", "inherit");
+				}
+				$("#timer").html(mstoTime(Math.ceil(displayedTime / 1000) * 1000));
+				$("#elapsed").html(mstoTime(elapsedTime));
+				if (displayedTime < 5000) {
+					if (!played) {
+						soundEffect.src = 'count.mp3';
+						soundEffect.play();
+						played = true;
+					}
+				}
+				prev = $("#timer").html();
+				setTimeout('time()', 15);
+			}
+			function mstoTime(input) {
+				var ms, s, min, hr;			//actual integer
+				var msd, sd, mind, hrd;		//string formatted form
+				ms = input % 1000;
+				s = ((input - ms)/1000)%60;
+				min = ((((input-ms)/1000) - s) / 60) % 60;
+				hr = (((((input-ms)/1000) - s) / 60) - min) / 60;
+				msd = display(ms, 3);
+				sd = display(s,2);
+				hrd = hr;
+				if (hr > 0) {
+					mind = display(min,2);
+					return `${hrd}:${mind}:${sd}`;			
+				} else {
+					mind = min;
+					return `${mind}:${sd}`;
+				}
+			}
+			function display(input, places) {
+				var i, result;
+				result = input;
+				for (i = 1; i < places; i++) {
+					if (input < (Math.pow(10,places) / Math.pow(10, i))) {
+						result = "0" + result;
+					}
+				}
+				return result;
+			}
+		</script>
+	</head>
+	<body>
+		<audio id="count-audio">
+			<source src="count.mp3" type="audio/mp3">
+			Your browser does not support the audio element.
+	  	</audio>
+		<div id="container">
+			<header>
+				<h1 id="title">Circuit Breaker PT Workout Timer</h1>
+			</header>
+			<fieldset class="activity-container">
+				<legend>Activity Done:</legend>
+				<p id="activity">Timer not started yet</p>
+				<p id="next-activity-p">Next Activity: <span id="next-activity">-</span></p>
+			</fieldset>
+			<div id="overalltimer">
+				<div id="startc" class="timer-container">
+					<button class="button-h" id="start">Start Timer</button>
+				</div>
+				<div id="timerc" class="timer-container">
+					<p>Activity Time Left:</p>
+					<div id="timer">3:00</div>
+					<p>Elapsed Time:</p>
+					<p id="elapsed">0:00</p>
+				</div>
+			</div>
+			<footer>
+				<button class="button-h" id="edit-activity">Edit Activities</button>
+				<button class="button-h" id="night">Night Mode</button>
+			</footer>
+		</div>
+		<div id="popup-panel"></div>
+		<div id="popup-container">
+			<h1>Edit Activities</h1>
+			<table>
+				<tr>
+					<td class="left">Activity 1<br><span class="small">(Upper Body)</span></td>
+					<td class="right">
+						<input type="text" placeholder="Push-Up" id="activity-1" list="list-1">
+						<datalist id="list-1">
+							<option value="Push-Up"></option>
+							<option value="Staggered Stance Push-Up"></option>
+							<option value="Wide Arm Push-Up"></option>
+							<option value="Diamond Push-Up"></option>
+						</datalist>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">Activity 2<br><span class="small">(Lower Body)</span></td>
+					<td class="right">
+						<input type="text" placeholder="Air Squat" id="activity-2" list="list-2">
+						<datalist id="list-2">
+							<option value="Air Squat"></option>
+							<option value="Lunges"></option>
+							<option value="High Jumper"></option>
+							<option value="Split Jump Lunges"></option>
+						</datalist>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">Activity 3<br><span class="small">(Core)</span></td>
+					<td class="right">
+						<input type="text" placeholder="Crunches" id="activity-3" list="list-3">
+						<datalist id="list-3">
+							<option value="Crunches"></option>
+							<option value="Flutter Kick"></option>
+							<option value="Plank"></option>
+							<option value="Glute Bridge"></option>
+							<option value="Side Plank"></option>
+							<option value="Seated Leg Tuck"></option>
+							<option value="Plank Shoulders Tap"></option>
+							<option value="Prone Row"></option>
+						</datalist>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">Activity 4<br><span class="small">(Full Body)</span></td>
+					<td class="right">
+						<input type="text" placeholder="Burpee" id="activity-4" list="list-4">						
+						<datalist id="list-4">
+							<option value="Burpee"></option>
+							<option value="Mountain Climber"></option>
+							<option value="Jumping Jack"></option>
+							<option value="Star Jump"></option>
+							<option value="High Knees"></option>
+							<option value="Sit-Stand"></option>
+						</datalist>
+					</td>
+				</tr>
+				<tr>
+					<td class="left">Activity 5<br><span class="small">(Any)</span></td>
+					<td class="right">
+						<input type="text" placeholder="Plank" id="activity-5" list="list-5">
+						<datalist id="list-5">
+							<option value="Push-Up"></option>
+							<option value="Staggered Stance Push-Up"></option>
+							<option value="Wide Arm Push-Up"></option>
+							<option value="Diamond Push-Up"></option>
+							<option value="Air Squat"></option>
+							<option value="Lunges"></option>
+							<option value="High Jumper"></option>
+							<option value="Split Jump Lunges"></option>
+							<option value="Crunches"></option>
+							<option value="Flutter Kick"></option>
+							<option value="Plank"></option>
+							<option value="Glute Bridge"></option>
+							<option value="Side Plank"></option>
+							<option value="Seated Leg Tuck"></option>
+							<option value="Plank Shoulders Tap"></option>
+							<option value="Prone Row"></option>
+							<option value="Burpee"></option>
+							<option value="Mountain Climber"></option>
+							<option value="Jumping Jack"></option>
+							<option value="Star Jump"></option>
+							<option value="High Knees"></option>
+							<option value="Sit-Stand"></option>
+						</datalist>
+					</td>
+				</tr>
+			</table>
+			<button class="button-h" id="close-panel">Close</button>
+		</div>
+	</body>
+</html>
