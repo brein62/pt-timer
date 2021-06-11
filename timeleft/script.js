@@ -7,7 +7,7 @@ function page() {
 
 function daysLeft(option1, option2) {
     const jun13 = new Date("June 13, 2021 00:00:00 GMT+08:00");
-    const jun15 = new Date("June 15, 2021 10:00:00 GMT+08:00");
+    const jun21 = new Date("June 21, 2021 00:00:00 GMT+08:00");
     const may16 = new Date("May 16, 2021 00:00:00 GMT+08:00");
     const may18 = new Date("May 18, 2021 17:00:00 GMT+08:00");
     const now = Date.now();
@@ -16,8 +16,8 @@ function daysLeft(option1, option2) {
 
     if (option1 == 13) {
         sel1 = jun13;
-    } else if (option1 == 15) {
-        sel1 = jun15;
+    } else if (option1 == 21) {
+        sel1 = jun21;
     }
 
     timeLeft1 = sel1 - now;
@@ -50,20 +50,20 @@ $("#jun13").click(function() {
     if ($("#jun13w").hasClass("active") == false) {
         console.log("hi");
         $("#jun13w").addClass("active");
-        $("#jun15w").removeClass("active");
+        $("#jun21w").removeClass("active");
         $("#time-1").html("Jun 13, midnight");
         option = 13;
         window.setInterval(daysLeft(option, option2), 10);
     }
 });
 
-$("#jun15").click(function() {
-    if ($("#jun15w").hasClass("active") == false) {
+$("#jun21").click(function() {
+    if ($("#jun21w").hasClass("active") == false) {
         console.log("hi");
-        $("#jun15w").addClass("active");
+        $("#jun21w").addClass("active");
         $("#jun13w").removeClass("active");
-        $("#time-1").html("Jun 15, 10am");
-        option = 15;
+        $("#time-1").html("Jun 21, midnight");
+        option = 21;
         window.setInterval(daysLeft(option, option2), 10);
     }
 });
